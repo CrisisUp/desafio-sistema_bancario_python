@@ -4,6 +4,36 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich import print as rprint
+import json
+import os
+
+# Caminho relativo para o seu arquivo
+CAMINHO_DATA = os.path.join("data", "usuarios.json")
+
+def carregar_dados():
+    """Lê o arquivo JSON e retorna as listas de usuários e contas."""
+    if not os.path.exists(CAMINHO_DATA):
+        return [], []  # Se o arquivo não existir, retorna listas vazias
+
+    try:
+        with open(CAMINHO_DATA, "r", encoding="utf-8") as arquivo:
+            dados = json.load(arquivo)
+            return dados.get("usuarios", []), dados.get("contas", [])
+    except (json.JSONDecodeError, FileNotFoundError):
+        return [], []
+
+def salvar_dados(usuarios, contas):
+    """Grava as listas de usuários e contas no arquivo JSON."""
+    # Criamos a pasta data caso ela tenha sido deletada por acidente
+    os.makedirs("data", exist_ok=True)
+    
+    dados = {
+        "usuarios": usuarios,
+        "contas": contas
+    }
+    
+    with open(CAMINHO_DATA, "w", encoding="utf-8") as arquivo:
+        json.dump(dados, arquivo, indent=4, ensure_ascii=False)
 
 console = Console()
 
@@ -107,7 +137,7 @@ def exibir_extrato(contas):
 
         console.print(table)
         rprint(f"\n[bold yellow]Saldo Atual:[/][bold green] R$ {conta['saldo']:.2f}[/]")
-        rprint(f"[bold white]Titular:[/][italic] {conta['usuario']['nome']}[/]")
+        rprint(f"[bold white]Titular:[/][italic] {conta['usuario']['nome']}[/]\n")
 
 def criar_usuario(usuarios):
     cpf = console.input("Informe o CPF (somente números): ")

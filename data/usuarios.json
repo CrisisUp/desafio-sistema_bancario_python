@@ -1,0 +1,42 @@
+{
+    "usuarios": [
+        {
+            "nome": "Cristiano",
+            "data_nascimento": "02-02-1933",
+            "cpf": "12345678900",
+            "endereco": "XXXXXXXX"
+        },
+        {
+            "nome": "Elizabeth",
+            "data_nascimento": "01-01-1945",
+            "cpf": "12345678901",
+            "endereco": "YYYYYYYYYYYYYYYYYYY"
+        }
+    ],
+    "contas": [
+        {
+            "agencia": "0001",
+            "numero_conta": 1,
+            "usuario": {
+                "nome": "Cristiano",
+                "data_nascimento": "02-02-1933",
+                "cpf": "12345678900",
+                "endereco": "XXXXXXXX"
+            },
+            "saldo": 64.79,
+            "extrato": "Depósito:\tR$ 67.98\nSaque:\t\tR$ 3.19\n"
+        },
+        {
+            "agencia": "0001",
+            "numero_conta": 2,
+            "usuario": {
+                "nome": "Elizabeth",
+                "data_nascimento": "01-01-1945",
+                "cpf": "12345678901",
+                "endereco": "YYYYYYYYYYYYYYYYYYY"
+            },
+            "saldo": 12345678.0,
+            "extrato": "Depósito:\tR$ 12345678.00\n"
+        }
+    ]
+}
