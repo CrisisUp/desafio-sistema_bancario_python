@@ -2,39 +2,50 @@
 from funcoes import *
 
 def main():
+    # Tenta carregar os dados. Se a função não for encontrada, o erro aparece aqui.
     usuarios, contas = carregar_dados()
 
-    LIMITE_SAQUES = 3
-    LIMITE_VALOR_SAQUE = 500
-    NUMERO_SAQUES = 0
-    AGENCIA = "0001"
+    AGENCIA = "0001" 
 
     while True:
         opcao = menu()
 
         if opcao == "d":
-            depositar(contas)
-            salvar_dados(usuarios, contas)
+            numero_conta = obter_entrada_numerica("Informe o número da conta: ")
+            if numero_conta:
+                conta = filtrar_conta(contas, numero_conta)
+                if conta:
+                    valor = obter_entrada_numerica("Informe o valor do depósito: ", float)
+                    transacao = Deposito(valor)
+                    # Na POO, acessamos o cliente da conta para realizar a transação
+                    conta._cliente.realizar_transacao(conta, transacao)
+                    salvar_dados(usuarios, contas)
 
         elif opcao == "s":
-            # Chame a função de saque passando a lista de contas
-            sacou = sacar(contas=contas, limite=LIMITE_VALOR_SAQUE, numero_saques=NUMERO_SAQUES, limite_saques=LIMITE_SAQUES)
-            if sacou:
-                NUMERO_SAQUES += 1
+            numero_conta = obter_entrada_numerica("Informe o número da conta: ")
+            if numero_conta:
+                conta = filtrar_conta(contas, numero_conta)
+                if conta:
+                    valor = obter_entrada_numerica("Informe o valor do saque: ", float)
+                    transacao = Saque(valor)
+                    conta._cliente.realizar_transacao(conta, transacao)
+                    salvar_dados(usuarios, contas)
 
         elif opcao == "e":
-            exibir_extrato(contas)
+            numero_conta = obter_entrada_numerica("Informe o número da conta para extrato: ")
+            if numero_conta:
+                conta = filtrar_conta(contas, numero_conta)
+                if conta:
+                    exibir_extrato_poo(conta)
 
         elif opcao == "nu":
-            criar_usuario(usuarios)
+            criar_usuario_poo(usuarios)
             salvar_dados(usuarios, contas)
 
         elif opcao == "nc":
             numero_conta = len(contas) + 1
-            conta = criar_conta(AGENCIA, numero_conta, usuarios)
-            if conta:
-                contas.append(conta)
-                salvar_dados(usuarios, contas)
+            criar_conta_poo(AGENCIA, numero_conta, usuarios, contas)
+            salvar_dados(usuarios, contas)
 
         elif opcao == "lc":
             listar_contas(contas)
@@ -43,10 +54,8 @@ def main():
             listar_usuarios(usuarios)
 
         elif opcao == "q":
+            rprint("[bold blue]Saindo...[/]\n")
             break
-
-        else:
-            rprint("[bold red]@@@ Operação inválida! Por favor, selecione novamente a operação desejada. @@@[/]\n")
 
 if __name__ == "__main__":
     main()
